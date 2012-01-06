@@ -1,0 +1,3 @@
+#!/bin/sh
+
+./envstingy/bin/fab $1

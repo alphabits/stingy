@@ -19,6 +19,17 @@ def init_db():
     Base.metadata.create_all(bind=engine)
 
 
+class DBModel(object):
+
+    def save(self):
+        db_session.add(self)
+        db_session.commit()
+
+    def delete(self):
+        db_session.delete(self)
+        db_session.commit()
+
+
 class Timestampable(object):
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, onupdate=datetime.now)

@@ -1,3 +1,4 @@
+from __future__ import with_statement
 import os
 
 from stingy.config import DB_CONNECTION_STRING
