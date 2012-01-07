@@ -1,4 +1,14 @@
 {% extends 'layout.html' %}
+{%- from "_helpers.html" import render_field, event_link with context -%}
 {% block content %}
-<h2>Welcome</h2>
+<h2>Create event</h2>
+<form action="" method="post">
+    {% for field in event_form %}
+    {{ render_field(field) }}
+    {% endfor %}
+    <input type="submit" name="create_event" value="Create event" />
+</form>
+{% for event in events %}
+<p>{{ event_link(event) }}</p>
+{% endfor %}
 {% endblock %}

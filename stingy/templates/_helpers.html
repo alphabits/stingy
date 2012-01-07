@@ -1,0 +1,21 @@
+{#
+vim:filetype=htmljinja
+#}
+{% macro render_field(field) %}
+<div class="form-field {{ field.id }}{{ get_field_error_class(field) }}">
+    <label for="{{ field.id }}">{{ field.label.text }}{{ render_field_error(field) }}</label>
+    {{ field }}
+</div>
+{% endmacro %}
+
+{%- macro get_field_error_class(field) -%}
+{%- if field.errors -%} error{%- endif -%}
+{%- endmacro -%}
+
+{%- macro render_field_error(field) -%}
+{%- if field.errors -%}{{ field.errors.0 }}{%- endif -%}
+{%- endmacro -%}
+
+{%- macro event_link(event) -%}
+<a href="{{ url_for('event_details', slug=event.slug) }}">{{ event.name }}</a>
+{%- endmacro -%}

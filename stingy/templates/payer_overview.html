@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{%- from "_helpers.html" import render_field, event_link -%}
+{% block content %}
+<h2>Payer for {{ event_link(event) }}</h2>
+{%- for payer in event.payers -%}
+<dl>
+    <dt>Name</dt>
+    <dd>{{ payer.name }}</dd>
+    <dt>Persons</dt>
+    <dd>{{ payer.weight }}</dd>
+    <dt>Total expenses</dt>
+    <dd>{{ payer.total_expenses }}</dd>
+    <dt>Balance</dt>
+    <dd>{{ payer.balance }}</dd>
+</dl>
+{%- endfor -%}
+<form action="" method="post">
+{%- for field in form -%}
+{{ render_field(field) }}
+{%- endfor -%}
+<input type="submit" name="create_payer" value="Create payer" />
+</form>
+{% endblock %}
