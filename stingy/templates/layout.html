@@ -9,7 +9,8 @@
     <body>
         
         <h1><a href="{{ url_for('index') }}">Stingy</a></h1>
-        
+
+        {% block menu %}{% endblock %}
         {% block content %}{% endblock %}
 
     </body>

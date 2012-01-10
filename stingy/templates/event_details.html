@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
+{%- from "_helpers.html" import menu -%}
+{% block menu %}{{ menu(event) }}{% endblock %}
 {% block content %}
 <h2>{{ event.name_label }}</h2>
-<h3>Amount per person: {{ event.amount_pr_person }}</h3>
-<p><a href="{{ url_for('payer_overview', slug=event.slug) }}">Show the payers</a></p>
-<p><a href="{{ url_for('expense_overview', slug=event.slug) }}">Show the expenses</a></p>
+<h3>Amount per person: {{ event.amount_pr_person|money }}</h3>
 {% endblock %}

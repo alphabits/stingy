@@ -50,8 +50,9 @@ def expense_overview(slug):
         return redirect(url_for('expense_overview', slug=event.slug))
     return render_template('expense_overview.html', **locals())
 
-@app.route('/events/<slug>/transactions')
+@app.route('/events/<slug>/transactions', methods=['GET', 'POST'])
 def transaction_overview(slug):
     event = get_event_or_abort(slug)
-    event.regenerate_transactions()
+    if request.method == 'POST' and 'regenerate' in request.form:
+        event.regenerate_transactions()
     return render_template('transaction_overview.html', **locals())

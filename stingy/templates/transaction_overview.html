@@ -1,8 +1,14 @@
 {% extends 'layout.html' %}
-{%- from "_helpers.html" import render_field, event_link -%}
+{%- from "_helpers.html" import render_field, event_link, menu -%}
+{% block menu %}{{ menu(event) }}{% endblock %}
 {% block content %}
 <h2>Payment plan for {{ event_link(event) }}</h2>
+{% if event.unbalanced_payer_exists() %}
+<form action="" method="post">
+    <input type="submit" value="Generate transactions" name="regenerate" />
+</form>
+{% endif %}
 {%- for t in event.transactions -%}
-<p>{{ t.from_.name }} &#8594; {{ t.to.name }} {{ t.amount }}</p>
+<p>{{ t.from_.name }} &#8594; {{ t.to.name }} {{ t.amount|money }}</p>
 {%- endfor -%}
 {% endblock %}

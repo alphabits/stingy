@@ -82,10 +82,10 @@ class Event(Base, DBModel, Timestampable):
     def generate_transactions(self):
         if len(self.payers) < 2:
             return
-        while self.unbalanced_payers_exists():
+        while self.unbalanced_payer_exists():
             self.balance_one_payer()
 
-    def unbalanced_payers_exists(self):
+    def unbalanced_payer_exists(self):
         for p in self.payers:
             if not p.in_balance():
                 return True
@@ -106,16 +106,14 @@ class Event(Base, DBModel, Timestampable):
     def _balance_one_payer(self, payer, all_payers):
         if payer.is_creditor():
             all_payers.reverse()
-        while all_payers:
+        while not payer.in_balance() and all_payers:
             if payer.is_creditor():
                 from_ = all_payers.pop()
                 to = payer
             else:
                 from_ = payer
                 to = all_payers.pop()
-            amount = min(abs(from_.get_balance()), to.get_balance())
-            if abs(amount) < 0.1:
-                break
+            amount = min(abs(from_.get_balance()), abs(to.get_balance()))
             t = Transaction(from_=from_, to=to, event=self, amount=amount)
             t.save()
 
