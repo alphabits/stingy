@@ -56,3 +56,4 @@ def transaction_overview(slug):
     if request.method == 'POST' and 'regenerate' in request.form:
         event.regenerate_transactions()
     return render_template('transaction_overview.html', **locals())
+

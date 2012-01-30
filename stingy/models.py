@@ -59,6 +59,20 @@ class Event(Base, DBModel, Timestampable):
             return 0
         return self.total_expenses/self.total_weight
 
+    def get_json_data(self, url_for):
+        links = {
+            'self': url_for('api.events', event_slug=self.slug),
+            '/rels/event-expenses': url_for('api.expenses', event_slug=self.slug)
+        }
+        return dict(
+            id=self.id,
+            slug=self.slug,
+            name=self.name,
+            status=self.status,
+            links=links,
+            amount_pr_person=self.amount_pr_person
+        )
+
     def is_viewable(self):
         return self.status in ['active', 'closed']
 
@@ -170,6 +184,20 @@ class Payer(Base, DBModel, Timestampable):
     def is_creditor(self, including_transactions=True):
         return self.get_balance(including_transactions) > 0
 
+    def get_json_data(self, url_for):
+        return dict(
+            id=self.id, 
+            name=self.name, 
+            weight=self.weight,
+            links={
+                'self': url_for('api.payers', event_slug=self.event.slug, payer_id=self.id)
+            }
+        )
+
+    @classmethod
+    def get_by_id_and_event_id(cls, id, event_id):
+        return cls.query.filter((cls.id==id) & (cls.event_id==event_id)).first()
+
 
 class Expense(Base, DBModel, Timestampable):
     __tablename__ = 'expenses'
@@ -180,6 +208,21 @@ class Expense(Base, DBModel, Timestampable):
 
     event_id = Column(Integer, ForeignKey('events.id'))
     payer_id = Column(Integer, ForeignKey('payers.id'))
+
+    def get_json_data(self, url_for):
+        return dict(
+            id=self.id, 
+            description=self.description, 
+            amount=self.amount,
+            links={
+                'self': url_for('api.expenses', event_slug=self.event.slug),
+                '/rels/expense-payer': url_for('api.payers', event_slug=self.event.slug, payer_id=self.payer_id)
+            }
+        )
+
+    @classmethod
+    def get_by_id_and_event_id(cls, id, event_id):
+        return cls.query.filter((cls.id==id) & (cls.event_id==event_id)).first()
 
 
 class Transaction(Base, DBModel, Timestampable):
