@@ -1,17 +1,39 @@
+{#
+vim:filetype=htmljinja
+#}
+{%- import "_helpers.html" as h -%}
 <!DOCTYPE HTML>
 <html>
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8">
     
-        <title>Stingy</title>
+        <title>The Debitor</title>
+
+        {%- for file in config.LIB_SCRIPTS %}
+        {{ h.script(file) }}
+        {%- endfor %}
         
     </head>
     <body>
         
-        <h1><a href="{{ url_for('index') }}">Stingy</a></h1>
+        <header>
+            <div class="logo">The Debitor</div>
+            {% block menu %}{% endblock %}
+        </header>
 
-        {% block menu %}{% endblock %}
-        {% block content %}{% endblock %}
+        <div id="main">
+            {% block content %}{% endblock %}
+        </div>
+
+        <footer>
+            Made with &#9829; from Copenhagen / By Jello ApS and Alphabits
+        </footer>
+
+        {% for filename in config.APP_SCRIPTS %}
+        {{ h.script(filename) }}
+        {% endfor %}
+
+        {% block inlinejs %}{% endblock %}
 
     </body>
 </html>

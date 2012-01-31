@@ -1,14 +1,44 @@
+{#
+vim:filetype=htmljinja
+#}
 {% extends 'layout.html' %}
-{%- from "_helpers.html" import render_field, event_link with context -%}
+{%- import "_helpers.html" as h -%}
+
 {% block content %}
-<h2>Create event</h2>
-<form action="" method="post">
+<div id="sales-splash">
+    <h1>The Debitor</h1>
+    <h2>Just held an event or a party?</h2>
+    <p>
+        Who has paid for what? And who owes money to whom? No worries, you have The Debitor <small>(Oh, and it's free)</small>
+    </p>
+</div>
+<form action="" method="post" id="create-event">
     {% for field in event_form %}
-    {{ render_field(field) }}
+    {{ h.render_field(field) }}
     {% endfor %}
-    <input type="submit" name="create_event" value="Create event" />
+    <input type="submit" name="create_event" value="Create event" class="submit" />
 </form>
-{% for event in events %}
-<p>{{ event_link(event) }}</p>
-{% endfor %}
+<div id="info">
+    <div class="description">
+        <h3>What is The Debitor?</h3>
+        <p>
+            The Debitor is the easiest way to find out who should pay money to whom, after a party, vacation, bridge tournament or any other event where many different people pays for different expenses.
+        </p>
+        <p>
+            Create your event, add people and expenses...
+        </p>
+    </div>
+    <div class="screenshots">
+        
+    </div>
+</div>
+{% endblock %}
+
+{% block inlinejs %}
+    <script>
+        $(document).ready(function () {
+            var view = new debitor.views.Index({el: $('.screenshots')});
+            view.render();
+        });
+    </script>
 {% endblock %}
